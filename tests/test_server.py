@@ -8,7 +8,7 @@ from downdoom import Server
 @pytest.mark.asyncio
 async def test_server_callbacks():
     server = Server()
-    
+
     @server.listen_up
     def test_callback(name: str):
         pass
@@ -34,7 +34,7 @@ async def test_server():
 
     flag = asyncio.Event()
     server.service_down_callbacks.append(lambda _: flag.set())
-    
+
     task = asyncio.create_task(server.run())
 
     await flag.wait()

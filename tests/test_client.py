@@ -13,7 +13,7 @@ async def test_client():
 
     flag = asyncio.Event()
     server.service_up_callbacks.append(lambda _: flag.set())
-    
+
     task_server = asyncio.create_task(server.run())
     task_client = asyncio.create_task(client.run())
 
