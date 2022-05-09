@@ -3,7 +3,6 @@ import logging
 
 from .interval import INTERVAL
 
-
 logger = logging.getLogger(__name__)
 
 

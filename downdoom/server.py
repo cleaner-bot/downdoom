@@ -5,7 +5,6 @@ import typing
 
 from .interval import INTERVAL
 
-
 logger = logging.getLogger(__name__)
 CallbackType = typing.Callable[[str], typing.Awaitable | None]
 

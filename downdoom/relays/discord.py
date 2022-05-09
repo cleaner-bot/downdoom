@@ -2,7 +2,6 @@ import httpx
 
 from .relay import Relay
 
-
 _user_agent = "DownDoomAlert (https://github.com/cleaner-bot/downdoom, 0.1.0)"
 
 
