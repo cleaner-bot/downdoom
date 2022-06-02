@@ -2,7 +2,7 @@ from setuptools import find_namespace_packages, setup  # type: ignore
 
 setup(
     name="downdoom",
-    version="0.1.0",
+    version="0.1.1",
     url="https://github.com/cleaner-bot/downdoom",
     author="Leo Developer",
     author_email="git@leodev.xyz",
