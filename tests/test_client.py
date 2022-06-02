@@ -6,7 +6,7 @@ from downdoom import Client, Server
 
 
 @pytest.mark.asyncio
-async def test_client():
+async def test_client() -> None:
     server = Server(ping_interval=500)
     server.add_service("test", -1000)
     client = Client("test", "localhost")

@@ -27,23 +27,23 @@ class Server:
         self.service_up_callbacks = []
         self.service_down_callbacks = []
 
-    def add_service(self, service: str, last_ping: float = None):
+    def add_service(self, service: str, last_ping: float | None = None) -> None:
         if last_ping is None:
             last_ping = time.monotonic()
         self.last_ping[service] = last_ping
 
-    def listen_up(self, cb: CallbackType):
+    def listen_up(self, cb: CallbackType) -> CallbackType:
         self.service_up_callbacks.append(cb)
         return cb
 
-    def listen_down(self, cb: CallbackType):
+    def listen_down(self, cb: CallbackType) -> CallbackType:
         self.service_down_callbacks.append(cb)
         return cb
 
-    async def run(self):
+    async def run(self) -> None:
         await asyncio.gather(self.server(), self.downtimer())
 
-    async def server(self):
+    async def server(self) -> None:
         server = await asyncio.start_server(
             self.handle_connection, self.host, self.port
         )
@@ -55,7 +55,7 @@ class Server:
 
     async def handle_connection(
         self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter
-    ):
+    ) -> None:
         service = None
         sequence = 0
         try:
@@ -87,7 +87,7 @@ class Server:
             else:
                 logger.info(f"connection to {service!r} closed")
 
-    async def downtimer(self):
+    async def downtimer(self) -> None:
         while True:
             now = time.monotonic()
             for service, last_ping in self.last_ping.items():
@@ -104,13 +104,13 @@ class Server:
 
             await asyncio.sleep(self.ping_interval / 1000)
 
-    async def service_is_down(self, service: str):
+    async def service_is_down(self, service: str) -> None:
         for callback in self.service_down_callbacks:
             result = callback(service)
             if result is not None:
                 await result
 
-    async def service_is_up(self, service: str):
+    async def service_is_up(self, service: str) -> None:
         for callback in self.service_up_callbacks:
             result = callback(service)
             if result is not None:

@@ -7,11 +7,11 @@ from downdoom import Server
 
 
 @pytest.mark.asyncio
-async def test_server_callbacks():
+async def test_server_callbacks() -> None:
     server = Server()
 
     @server.listen_up
-    def test_callback(name: str):
+    def test_callback(name: str) -> None:
         pass
 
     server.listen_down(test_callback)
@@ -29,7 +29,7 @@ async def test_server_callbacks():
 
 
 @pytest.mark.asyncio
-async def test_server():
+async def test_server() -> None:
     server = Server(ping_interval=0)
     server.add_service("test")
 

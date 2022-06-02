@@ -17,7 +17,7 @@ class Client:
         self.port = port
         self.sequence = 0
 
-    async def connect_to_server(self):
+    async def connect_to_server(self) -> None:
         logger.debug(
             f"connecting as {self.service!r} to server at {self.host}:{self.port}"
         )
@@ -32,7 +32,7 @@ class Client:
         self.sequence = 1
         logger.info("connected to server")
 
-    async def establish_connection(self):
+    async def establish_connection(self) -> None:
         while True:
             try:
                 await self.connect_to_server()
@@ -46,10 +46,10 @@ class Client:
             logger.debug("failed to connect to server")
             await asyncio.sleep(1)  # backoff
 
-    def connection_lost(self):
+    def connection_lost(self) -> None:
         self.writer = self.reader = self.ping_interval = None
 
-    async def run(self):
+    async def run(self) -> None:
         while True:
             await self.establish_connection()
             while True:
@@ -60,11 +60,16 @@ class Client:
                 except ConnectionError:
                     break
                 else:
+                    if self.ping_interval is None:
+                        break
                     await asyncio.sleep(self.ping_interval / 1000)
 
             self.connection_lost()
 
-    async def send_ping(self):
+    async def send_ping(self) -> None:
+        assert self.writer
+        assert self.reader
+
         self.writer.write(bytes([self.sequence]))
         await self.writer.drain()
 

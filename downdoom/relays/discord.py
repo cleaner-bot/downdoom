@@ -1,3 +1,5 @@
+import typing
+
 import httpx
 
 from .relay import Relay
@@ -19,19 +21,19 @@ class DiscordRelay(Relay):
             aclient = httpx.AsyncClient(headers={"user-agent": _user_agent})
         self.aclient = aclient
 
-    async def on_up(self, name: str):
+    async def on_up(self, name: str) -> None:
         body = {
             "content": self.content,
             "embeds": [{"title": f"{name} is back!", "color": 0x10B981}],
         }
         await self.execute_webhook(body)
 
-    async def on_down(self, name: str):
+    async def on_down(self, name: str) -> None:
         body = {
             "content": self.content,
             "embeds": [{"title": f"{name} is down!", "color": 0xF43F5E}],
         }
         await self.execute_webhook(body)
 
-    async def execute_webhook(self, body):
+    async def execute_webhook(self, body: typing.Any) -> None:
         await self.aclient.post(self.webhook_url, json=body)
